@@ -3,6 +3,7 @@ import 'package:estudiantes_aplicacion/services/student.dart';
 import 'package:estudiantes_aplicacion/widgets/appbar.dart';
 
 import '../models/address.dart';
+import 'address_student.dart';
 class EditAddress extends StatefulWidget {
   const EditAddress({required this.addressId});
 
@@ -85,9 +86,20 @@ class _EditAddressState extends State<EditAddress> {
   }
     saveData() async{
      AddressModel address = AddressModel(addressId: widget.addressId, studentId: studentId, addressLine: _addressLineController.text, city: _cityController.text, zipPostcode: _zipController.text, state: _stateController.text);
-       await  studentService.editAddress(address).then((value) => {
-        print(value)
-       });
+     try {
+      await studentService.editAddress(address).then((value) => {
+
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) =>AddressStudent(
+                studentId: studentId,
+              ),
+            ))
+      });
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(e.toString())),
+      );
+    }
       
     }
 }

@@ -277,4 +277,10 @@ Future<int> deleteEmail(String email) async {
     whereArgs: [email],
   );
 }
+Future<bool> isEmailUnique(String email) async {
+  final db = await database;
+  final result = await db.rawQuery('SELECT COUNT(*) as count FROM $emailsTableName WHERE email = ?', [email]);
+  final count = Sqflite.firstIntValue(result);
+  return count == 0; 
+}
 }

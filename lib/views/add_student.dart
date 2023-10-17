@@ -3,6 +3,9 @@ import 'package:estudiantes_aplicacion/services/student.dart';
 import 'package:flutter/material.dart';
 
 import 'package:estudiantes_aplicacion/widgets/appbar.dart';
+
+import '../utils/constant.dart';
+
 class AddStudent extends StatefulWidget {
   const AddStudent({Key? key}) : super(key: key);
 
@@ -20,12 +23,18 @@ class _AddStudentState extends State<AddStudent> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(title: 'Nuevo estudiante'),
-      floatingActionButton: FloatingActionButton(onPressed:saveData,
-       child: const Icon(Icons.save),),
+      floatingActionButton: FloatingActionButton(
+        onPressed: saveData,
+        child: const Icon(Icons.save),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(15.0),
-        child: Column(
-            children: [_firstNameInput(), _middleNameInput(), _lastNameInput(),genderSelect()]),
+        child: Column(children: [
+          _firstNameInput(),
+          _middleNameInput(),
+          _lastNameInput(),
+          genderSelect()
+        ]),
       ),
     );
   }
@@ -53,23 +62,21 @@ class _AddStudentState extends State<AddStudent> {
 
   Widget genderSelect() {
     return DropdownButtonFormField<String>(
-      onChanged: (value)=>{
-       gender = value!
-      },
+      onChanged: (value) => {gender = value!},
       items: [
         const DropdownMenuItem<String>(
-          value:'Masculino',
+          value: 'Masculino',
           child: Text('Masculino'),
         ),
-              const DropdownMenuItem<String>(
+        const DropdownMenuItem<String>(
           value: 'Femenino',
           child: Text('Femenino'),
         ),
-            const    DropdownMenuItem<String>(
+        const DropdownMenuItem<String>(
           value: 'No binario',
           child: Text('No binario'),
         ),
-              const  DropdownMenuItem<String>(
+        const DropdownMenuItem<String>(
           value: 'Otro',
           child: Text('Otro'),
         ),
@@ -77,12 +84,22 @@ class _AddStudentState extends State<AddStudent> {
       hint: const Text('Genero'),
     );
   }
-  
-    saveData() async{
-       StudentModel student  = StudentModel(lastName: _lastNameController.text, firstName: _firstNameController.text, middleName: _middleNameController.text, gender: gender);
-       await  studentService.addStudent(student).then((value) => {
-        print(value)
-       });
-      
+
+  saveData() async {
+    StudentModel student = StudentModel(
+        lastName: _lastNameController.text,
+        firstName: _firstNameController.text,
+        middleName: _middleNameController.text,
+        gender: gender);
+
+    try {
+      await studentService
+          .addStudent(student)
+          .then((value) => {Navigator.pushNamed(context, studentList)});
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(e.toString())),
+      );
     }
+  }
 }

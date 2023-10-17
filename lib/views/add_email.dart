@@ -1,9 +1,11 @@
 import 'package:estudiantes_aplicacion/models/email.dart';
 import 'package:estudiantes_aplicacion/models/student.dart';
 import 'package:estudiantes_aplicacion/services/student.dart';
+import 'package:estudiantes_aplicacion/views/mail_student.dart';
 import 'package:flutter/material.dart';
 
 import 'package:estudiantes_aplicacion/widgets/appbar.dart';
+
 class AddEmail extends StatefulWidget {
   const AddEmail({required this.studentId});
   final int studentId;
@@ -21,12 +23,13 @@ class _AddEmailState extends State<AddEmail> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(title: 'Agregar Correo'),
-      floatingActionButton: FloatingActionButton(onPressed:saveData,
-       child: const Icon(Icons.save),),
+      floatingActionButton: FloatingActionButton(
+        onPressed: saveData,
+        child: const Icon(Icons.save),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(15.0),
-        child: Column(
-            children: [_emailInput(),typeSelect()]),
+        child: Column(children: [_emailInput(), typeSelect()]),
       ),
     );
   }
@@ -38,32 +41,41 @@ class _AddEmailState extends State<AddEmail> {
     );
   }
 
-
   Widget typeSelect() {
     return DropdownButtonFormField<String>(
-      onChanged: (value)=>{
-      email_type = value!
-      },
+      onChanged: (value) => {email_type = value!},
       items: [
         const DropdownMenuItem<String>(
-          value:'Personal',
+          value: 'Personal',
           child: Text('Personal'),
         ),
-              const DropdownMenuItem<String>(
+        const DropdownMenuItem<String>(
           value: 'Profesional',
           child: Text('Profesional'),
         ),
-       
       ],
       hint: const Text('Tipo de Correo'),
     );
   }
-  
-    saveData() async{
-       EmailModel email = EmailModel(email: _emailController.text, studentId: widget.studentId, emailType: email_type);
-       await  studentService.addEmail(email).then((value) => {
-        print(value)
-       });
-      
+
+  saveData() async {
+    EmailModel email = EmailModel(
+        email: _emailController.text,
+        studentId: widget.studentId,
+        emailType: email_type);
+   
+    try {
+      await studentService.addEmail(email).then((value) => {
+            Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => MailStudent(
+                studentId: widget.studentId,
+              ),
+            ))
+          });
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(e.toString())),
+      );
     }
+  }
 }

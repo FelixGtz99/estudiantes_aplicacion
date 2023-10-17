@@ -4,6 +4,9 @@ import 'package:estudiantes_aplicacion/models/student.dart';
 import 'package:estudiantes_aplicacion/services/student.dart';
 
 import 'package:estudiantes_aplicacion/widgets/appbar.dart';
+
+import 'mail_student.dart';
+
 class EditEmail extends StatefulWidget {
   const EditEmail({required this.email});
 
@@ -14,7 +17,7 @@ class EditEmail extends StatefulWidget {
 
 class _EditEmailState extends State<EditEmail> {
   final _emailController = TextEditingController();
-  
+
   StudentService studentService = StudentService();
   late String email_type = '';
   int studentId = 0;
@@ -22,13 +25,13 @@ class _EditEmailState extends State<EditEmail> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(title: 'Editar Correo'),
-      floatingActionButton: FloatingActionButton(onPressed:saveData,
-       child: const Icon(Icons.save),),
+      floatingActionButton: FloatingActionButton(
+        onPressed: saveData,
+        child: const Icon(Icons.save),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(15.0),
-        child:
-        
-        FutureBuilder<EmailModel>(
+        child: FutureBuilder<EmailModel>(
           future: studentService.getDataEmail(widget.email),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
@@ -39,14 +42,14 @@ class _EditEmailState extends State<EditEmail> {
               return const Text('Estudiante no encontrado.');
             } else {
               final email = snapshot.data;
-              _emailController.text =email?.email ?? '';
+              _emailController.text = email?.email ?? '';
               studentId = email?.studentId ?? 0;
-       
-              return  Column(
-            children: [_emailInput(),typeSelect(email?.emailType)]);
+
+              return Column(
+                  children: [_emailInput(), typeSelect(email?.emailType)]);
             }
           },
-        ), 
+        ),
       ),
     );
   }
@@ -58,33 +61,41 @@ class _EditEmailState extends State<EditEmail> {
     );
   }
 
-
   Widget typeSelect(value) {
     return DropdownButtonFormField<String>(
       value: value,
-      onChanged: (value)=>{
-      email_type = value!
-      },
+      onChanged: (value) => {email_type = value!},
       items: [
         const DropdownMenuItem<String>(
-          value:'Personal',
+          value: 'Personal',
           child: Text('Personal'),
         ),
-              const DropdownMenuItem<String>(
+        const DropdownMenuItem<String>(
           value: 'Profesional',
           child: Text('Profesional'),
         ),
-       
       ],
       hint: const Text('Tipo de Correo'),
     );
   }
-  
-    saveData() async{
-       EmailModel email = EmailModel(email: _emailController.text, studentId: studentId, emailType: email_type);
-       await  studentService.editEmail(email).then((value) => {
-        print(value)
-       });
-      
+
+  saveData() async {
+    EmailModel email = EmailModel(
+        email: _emailController.text,
+        studentId: studentId,
+        emailType: email_type);
+    try {
+      await studentService.editEmail(email).then((value) => {
+            Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => MailStudent(
+                studentId: studentId,
+              ),
+            ))
+          });
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(e.toString())),
+      );
     }
+  }
 }
