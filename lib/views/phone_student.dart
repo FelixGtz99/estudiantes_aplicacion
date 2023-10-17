@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import '../services/student.dart';
 import 'package:estudiantes_aplicacion/views/add_phone.dart';
@@ -7,9 +6,15 @@ import '../models/phone.dart';
 import '../widgets/appbar.dart';
 import 'editPhone.dart';
 
-class PhoneStudent extends StatelessWidget {
+class PhoneStudent extends StatefulWidget {
   const PhoneStudent({required this.studentId});
   final int studentId;
+
+  @override
+  State<PhoneStudent> createState() => _PhoneStudentState();
+}
+
+class _PhoneStudentState extends State<PhoneStudent> {
   @override
   Widget build(BuildContext context) {
     final studentService = StudentService();
@@ -18,7 +23,7 @@ class PhoneStudent extends StatelessWidget {
           onPressed: () {
             Navigator.of(context).push(MaterialPageRoute(
               builder: (context) => AddPhone(
-                studentId: studentId,
+                studentId: widget.studentId,
               ),
             ));
           },
@@ -27,7 +32,7 @@ class PhoneStudent extends StatelessWidget {
         appBar: CustomAppBar(title: 'Teléfonos Estudiante'),
         body: Center(
           child: FutureBuilder<List<PhoneModel>>(
-            future: studentService.getPhones(studentId),
+            future: studentService.getPhones(widget.studentId),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const CircularProgressIndicator();
@@ -74,7 +79,17 @@ class PhoneStudent extends StatelessWidget {
                 icon: const Icon(Icons.edit),
               ),
               IconButton(
-                onPressed: () => {},
+                onPressed: () => {
+                  StudentService()
+                      .deletePhoneData(phone.phoneId ?? 0)
+                      .then((value) {
+                    setState(() {});
+                  }).onError((error, stackTrace) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text(error.toString())),
+                    );
+                  })
+                },
                 icon: const Icon(Icons.remove_circle),
               ),
             ],

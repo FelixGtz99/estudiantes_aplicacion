@@ -6,9 +6,15 @@ import '../services/student.dart';
 import '../widgets/appbar.dart';
 import 'edit_email.dart';
 
-class MailStudent extends StatelessWidget {
+class MailStudent extends StatefulWidget {
   const MailStudent({required this.studentId});
   final int studentId;
+
+  @override
+  State<MailStudent> createState() => _MailStudentState();
+}
+
+class _MailStudentState extends State<MailStudent> {
   @override
   Widget build(BuildContext context) {
     final studentService = StudentService();
@@ -17,7 +23,7 @@ class MailStudent extends StatelessWidget {
           onPressed: () {
             Navigator.of(context).push(MaterialPageRoute(
               builder: (context) => AddEmail(
-                studentId: studentId,
+                studentId: widget.studentId,
               ),
             ));
           },
@@ -26,7 +32,7 @@ class MailStudent extends StatelessWidget {
         appBar: CustomAppBar(title: 'Correos Estudiante'),
         body: Center(
           child: FutureBuilder<List<EmailModel>>(
-            future: studentService.getEmail(studentId),
+            future: studentService.getEmail(widget.studentId),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const CircularProgressIndicator();
@@ -73,7 +79,21 @@ class MailStudent extends StatelessWidget {
                 icon: const Icon(Icons.edit),
               ),
               IconButton(
-                onPressed: () => {},
+                onPressed: () => {
+
+                        StudentService()
+                      .deleteEmailData(email.email ?? '')
+                      .then((value) {
+                        setState(() {
+                          
+                        });
+                      })
+                      .onError((error, stackTrace) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text(error.toString())),
+                    );
+                  })
+                },
                 icon: const Icon(Icons.remove_circle),
               ),
             ],

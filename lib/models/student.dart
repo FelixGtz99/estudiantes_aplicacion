@@ -4,6 +4,7 @@ class StudentModel {
   String? middleName;
   String? firstName;
   String? gender;
+   int? status;
   DateTime? updatedOn;
   DateTime? createdOn;
 
@@ -14,7 +15,9 @@ class StudentModel {
       this.firstName,
       this.gender,
       this.updatedOn,
-      this.createdOn});
+      this.createdOn,
+      this.status = 1,
+      });
 
   StudentModel.fromJson(Map<String, dynamic> json) {
     studentId = json['student_id'];
@@ -22,6 +25,7 @@ class StudentModel {
     middleName = json['middle_name'];
     firstName = json['first_name'];
     gender = json['gender'];
+    status = json['status'] ?? 1 ;
    // updatedOn =DateTime.parse( json['updated_on'] );
 
   }
@@ -35,6 +39,7 @@ class StudentModel {
     data['gender'] = this.gender;
     data['updated_on'] = updatedOn?.toIso8601String();
     data['created_on'] = createdOn?.toIso8601String();
+    data['status'] = this.status;
     
     return data;
   }

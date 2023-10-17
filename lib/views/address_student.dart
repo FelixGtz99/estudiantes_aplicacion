@@ -6,9 +6,15 @@ import 'package:estudiantes_aplicacion/views/add_address.dart';
 import 'package:estudiantes_aplicacion/views/edit_address.dart';
 import '../models/address.dart';
 
-class AddressStudent extends StatelessWidget {
+class AddressStudent extends StatefulWidget {
   const AddressStudent({required this.studentId});
   final int studentId;
+
+  @override
+  State<AddressStudent> createState() => _AddressStudentState();
+}
+
+class _AddressStudentState extends State<AddressStudent> {
   @override
   Widget build(BuildContext context) {
     final studentService = StudentService();
@@ -17,7 +23,7 @@ class AddressStudent extends StatelessWidget {
           onPressed: () {
             Navigator.of(context).push(MaterialPageRoute(
               builder: (context) => AddAddress(
-                studentId: studentId,
+                studentId: widget.studentId,
               ),
             ));
           },
@@ -26,7 +32,7 @@ class AddressStudent extends StatelessWidget {
         appBar: CustomAppBar(title: 'Direcciones Estudiante'),
         body: Center(
           child: FutureBuilder<List<AddressModel>>(
-            future: studentService.getAddresses(studentId),
+            future: studentService.getAddresses(widget.studentId),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const CircularProgressIndicator();
@@ -73,7 +79,20 @@ class AddressStudent extends StatelessWidget {
                 icon: const Icon(Icons.edit),
               ),
               IconButton(
-                onPressed: () => {},
+                onPressed: () => {
+                  StudentService()
+                      .deleteAddressData(address.addressId ?? 0)
+                      .then((value) {
+                        setState(() {
+                          
+                        });
+                      })
+                      .onError((error, stackTrace) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text(error.toString())),
+                    );
+                  })
+                },
                 icon: const Icon(Icons.remove_circle),
               ),
             ],

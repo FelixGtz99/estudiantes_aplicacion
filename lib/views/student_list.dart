@@ -6,9 +6,14 @@ import 'package:estudiantes_aplicacion/widgets/appbar.dart';
 
 
 
-class StudentList extends StatelessWidget {
+class StudentList extends StatefulWidget {
   const StudentList({Key? key}) : super(key: key);
 
+  @override
+  State<StudentList> createState() => _StudentListState();
+}
+
+class _StudentListState extends State<StudentList> {
   @override
   Widget build(BuildContext context) {
     final studentService = StudentService();
@@ -18,28 +23,31 @@ class StudentList extends StatelessWidget {
       },
       child: Scaffold(
           appBar: CustomAppBar(title: 'Estudiantes',showActions: true,),
-          body: FutureBuilder<List<StudentModel>>(
-            future: studentService.fetchStudents(),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const CircularProgressIndicator(); // Muestra un indicador de carga mientras se obtienen los datos
-              } else if (snapshot.hasError) {
-                return Text('Error: ${snapshot.error}');
-              } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                return const Text('No se encontraron estudiantes.');
-              } else {
-                return ListView.builder(
-                  itemCount: snapshot.data!.length,
-                  itemBuilder: (context, index) {
-                    StudentModel student = snapshot.data![index];
-                    return studentTile(student, context);
-                  },
-                );
-              }
-            },
+          body: Center(
+            child: FutureBuilder<List<StudentModel>>(
+              future: studentService.fetchStudents(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const CircularProgressIndicator(); // Muestra un indicador de carga mientras se obtienen los datos
+                } else if (snapshot.hasError) {
+                  return Text('Error: ${snapshot.error}');
+                } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                  return const Text('No se encontraron estudiantes.');
+                } else {
+                  return ListView.builder(
+                    itemCount: snapshot.data!.length,
+                    itemBuilder: (context, index) {
+                      StudentModel student = snapshot.data![index];
+                      return studentTile(student, context);
+                    },
+                  );
+                }
+              },
+            ),
           )),
     );
   }
+
   Widget studentTile(StudentModel student, context) {
   return Container(
     margin: const EdgeInsets.symmetric(vertical: 2),
@@ -66,7 +74,21 @@ class StudentList extends StatelessWidget {
               icon: const Icon(Icons.visibility),
             ),
             IconButton(
-              onPressed: () => {},
+              onPressed: () => {
+
+                        StudentService()
+                      .deleteStudentData(student.studentId ?? 0)
+                      .then((value) {
+                        setState(() {
+                          
+                        });
+                      })
+                      .onError((error, stackTrace) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text(error.toString())),
+                    );
+                  })
+              },
               icon: const Icon(Icons.delete),
             ),
           ],
@@ -75,5 +97,4 @@ class StudentList extends StatelessWidget {
     ),
   );
 }
-
 }

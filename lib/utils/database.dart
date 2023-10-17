@@ -29,7 +29,7 @@ class DatabaseHelper {
   }
 
   Future<Database> initDatabase() async {
-    final path = join(await getDatabasesPath(), 'students_database3.db');
+    final path = join(await getDatabasesPath(), 'students_database5.db');
     return await openDatabase(path, version: 2, onCreate: _createDatabase);
   }
 
@@ -41,6 +41,7 @@ class DatabaseHelper {
         middle_name TEXT,
         first_name TEXT,
         gender TEXT,
+        status INTEGER DEFAULT 1,
         created_on DATETIME,
         updated_on DATETIME
       )
@@ -90,17 +91,31 @@ class DatabaseHelper {
     final db = await database;
     student.createdOn = DateTime.now();
     student.updatedOn = DateTime.now();
+
     return await db.insert(studentsTableName, student.toJson());
   }
 
   Future<List<StudentModel>> getAllStudents() async {
     final db = await database;
-    final List<Map<String, dynamic>> maps = await db.query(studentsTableName);
+    final List<Map<String, dynamic>> maps = await db.query(studentsTableName,where:'status = ?', whereArgs: [1] );
     return List.generate(maps.length, (index) {
       return StudentModel.fromJson(maps[index]);
     });
   }
+Future<int> deleteStudent(int studentId) async {
+  final db = await database;
+  final student = {
+    'status': 0,
+    'updated_on': DateTime.now().toIso8601String(),
+  };
 
+  return await db.update(
+    studentsTableName,
+    student,
+    where: 'student_id = ?',
+    whereArgs: [studentId],
+  );
+}
   Future<List<EmailModel>> getEmailsByStudentId(int studentId) async {
   final db = await database;
   final List<Map<String, dynamic>> maps = await db.query(

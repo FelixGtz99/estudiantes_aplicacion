@@ -75,4 +75,41 @@ class StudentService {
     throw Exception('Estudiante no encontrado');
   }
 }
+Future<void> deleteStudentData(int studentId) async {
+  try {
+    final rowsDeleted = await databaseHelper.deleteStudent(studentId);
+ 
+  } catch (e) {
+
+    throw 'Error al eliminar el telefono: $e';
+  }
+}
+Future<void> deletePhoneData(int phoneId) async {
+  try {
+    final rowsDeleted = await databaseHelper.deletePhone(phoneId);
+ 
+  } catch (e) {
+
+    throw 'Error al eliminar el número de teléfono: $e';
+  }
+}
+Future<void> deleteEmailData(String email) async {
+  try {
+    final rowsDeleted = await databaseHelper.deleteEmail(email);
+ 
+  } catch (e) {
+
+    throw 'Error al eliminar el correo: $e';
+  }
+}
+
+Future<void> deleteAddressData(int addressId) async {
+  try {
+    final rowsDeleted = await databaseHelper.deleteAddress(addressId);
+ 
+  } catch (e) {
+
+    throw 'Error al eliminar el dirección: $e';
+  }
+}
 }
