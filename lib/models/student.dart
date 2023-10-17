@@ -22,8 +22,8 @@ class StudentModel {
     middleName = json['middle_name'];
     firstName = json['first_name'];
     gender = json['gender'];
-    updatedOn = json['updated_on'];
-    createdOn = json['created_on'];
+    updatedOn =DateTime.parse( json['updated_on'] );
+    createdOn = DateTime.parse( json['created_on'] );
   }
 
   Map<String, dynamic> toJson() {
@@ -33,10 +33,11 @@ class StudentModel {
     data['middle_name'] = this.middleName;
     data['first_name'] = this.firstName;
     data['gender'] = this.gender;
-    data['updated_on'] = this.updatedOn;
-    data['created_on'] = this.createdOn;
+    data['updated_on'] = updatedOn?.toIso8601String();
+    data['created_on'] = createdOn?.toIso8601String();
+    
     return data;
   }
 
-  get fullName => firstName! +  lastName!;
+  get fullName => "${firstName!} ${middleName!} ${lastName!}";
 }

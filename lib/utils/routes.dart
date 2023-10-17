@@ -1,4 +1,5 @@
 
+import 'package:estudiantes_aplicacion/views/add_student.dart';
 import 'package:estudiantes_aplicacion/views/student_list.dart';
 import 'package:flutter/material.dart';
 
@@ -8,7 +9,8 @@ class Routes {
     switch (settings.name) {
       case studentList:
         return MaterialPageRoute(builder: (_) => const StudentList());
-
+      case addStudent:
+        return MaterialPageRoute(builder: (_) =>  AddStudent());
 
       default:
         return MaterialPageRoute(
