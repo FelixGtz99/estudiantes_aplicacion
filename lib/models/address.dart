@@ -41,4 +41,5 @@ class AddressModel {
    if(createdOn!=null)  data['created_on'] =createdOn?.toIso8601String();
     return data;
   }
+   get desc => "${zipPostcode!}, ${city!}, ${state!}";
 }

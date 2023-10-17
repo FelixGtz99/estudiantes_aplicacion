@@ -1,3 +1,4 @@
+import 'package:estudiantes_aplicacion/models/address.dart';
 import 'package:estudiantes_aplicacion/models/email.dart';
 import 'package:estudiantes_aplicacion/views/add_phone.dart';
 
@@ -47,6 +48,19 @@ class StudentService {
   }
     Future<PhoneModel> getPhone(phoneId) async{
     return await databaseHelper.getPhone(phoneId);
+  }
+    
+  Future<int> addAddress(AddressModel address) async {
+    return await databaseHelper.insertAddress(address);
+  }
+  Future<int> editAddress(AddressModel address) async {
+    return await databaseHelper.updateAddress(address);
+  }
+  Future<List<AddressModel>> getAddresses(studentId) async{
+    return await databaseHelper.getAddressesByStudentId(studentId);
+  }
+    Future<AddressModel> getAddress(addressId) async{
+    return await databaseHelper.getAddress(addressId);
   }
   Future<StudentModel> getStudentById(int studentId) async {
   final db = await databaseHelper.database;

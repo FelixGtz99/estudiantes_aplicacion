@@ -228,7 +228,7 @@ Future<int> updatePhone(PhoneModel phone) async {
   Future<AddressModel> getAddress(int addressId) async {
   final db = await database;
   final List<Map<String, dynamic>> maps = await db.query(
-   phonesTableName,
+  addressTableName,
     where: 'address_id = ?',
     whereArgs: [addressId],
   );
@@ -237,5 +237,29 @@ Future<int> updatePhone(PhoneModel phone) async {
   } else {
     throw Exception('Dirección no encontrada');
   }
+}
+Future<int> deletePhone(int phoneId) async {
+  final db = await database;
+  return await db.delete(
+    phonesTableName,
+    where: 'phone_id = ?',
+    whereArgs: [phoneId],
+  );
+}
+Future<int> deleteAddress(int addressId) async {
+  final db = await database;
+  return await db.delete(
+    addressTableName,
+    where: 'address_id = ?',
+    whereArgs: [addressId],
+  );
+}
+Future<int> deleteEmail(String email) async {
+  final db = await database;
+  return await db.delete(
+    emailsTableName,
+    where: 'email = ?',
+    whereArgs: [email],
+  );
 }
 }

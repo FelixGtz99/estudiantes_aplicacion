@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import '../models/student.dart';
 import '../services/student.dart';
 import '../widgets/appbar.dart';
+import 'address_student.dart';
 import 'mail_student.dart';
 
 class StudentDetailScreen extends StatelessWidget {
@@ -42,7 +43,6 @@ class StudentDetailScreen extends StatelessWidget {
                     leading: const Icon(Icons.edit),
                     title: const Text('Editar'),
                     onTap: () {
-                   
                       Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) => EditStudent(
                           studentId: student?.studentId ?? 0,
@@ -54,7 +54,6 @@ class StudentDetailScreen extends StatelessWidget {
                     leading: const Icon(Icons.email),
                     title: const Text('Correo'),
                     onTap: () {
-                      
                       Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) => MailStudent(
                           studentId: student?.studentId ?? 0,
@@ -66,8 +65,6 @@ class StudentDetailScreen extends StatelessWidget {
                     leading: const Icon(Icons.phone),
                     title: const Text('Teléfono'),
                     onTap: () {
-
-                          
                       Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) => PhoneStudent(
                           studentId: student?.studentId ?? 0,
@@ -78,7 +75,13 @@ class StudentDetailScreen extends StatelessWidget {
                   ListTile(
                     leading: Icon(Icons.location_on),
                     title: const Text('Direcciones'),
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => AddressStudent(
+                          studentId: student?.studentId ?? 0,
+                        ),
+                      ));
+                    },
                   ),
                 ],
               );
