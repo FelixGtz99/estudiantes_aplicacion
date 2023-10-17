@@ -31,7 +31,7 @@ class StudentList extends StatelessWidget {
                   itemCount: snapshot.data!.length,
                   itemBuilder: (context, index) {
                     StudentModel student = snapshot.data![index];
-                    return studentTile(student);
+                    return studentTile(student, context);
                   },
                 );
               }

@@ -1,7 +1,9 @@
 import 'package:estudiantes_aplicacion/models/student.dart';
 import 'package:flutter/material.dart';
 
-Widget studentTile(StudentModel student) {
+import '../views/student.dart';
+
+Widget studentTile(StudentModel student, context) {
   return Container(
     margin: const EdgeInsets.symmetric(vertical: 2),
     decoration: BoxDecoration(
@@ -16,16 +18,15 @@ Widget studentTile(StudentModel student) {
           children: [
             IconButton(
               onPressed: () {
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //     builder: (context) => OmitShop(
-                //       routeShopId: shop.route_shop_id,
-                //     ),
-                //   ),
-                // );
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => StudentDetailScreen(
+                      studentId: student.studentId ?? 0,
+                    ),
+                  ),
+                );
               },
-              icon: const Icon(Icons.edit),
+              icon: const Icon(Icons.visibility),
             ),
             IconButton(
               onPressed: () => {},
