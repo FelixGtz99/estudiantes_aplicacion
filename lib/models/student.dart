@@ -1,5 +1,5 @@
 class StudentModel {
-  int? addressId;
+  int? studentId;
   String? lastName;
   String? middleName;
   String? firstName;
@@ -8,7 +8,7 @@ class StudentModel {
   DateTime? createdOn;
 
   StudentModel(
-      {this.addressId,
+      {this.studentId,
       this.lastName,
       this.middleName,
       this.firstName,
@@ -17,7 +17,7 @@ class StudentModel {
       this.createdOn});
 
   StudentModel.fromJson(Map<String, dynamic> json) {
-    addressId = json['address_id'];
+    studentId = json['student_id'];
     lastName = json['last_name'];
     middleName = json['middle_name'];
     firstName = json['first_name'];
@@ -28,7 +28,7 @@ class StudentModel {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['address_id'] = this.addressId;
+    data['student_id'] = this.studentId;
     data['last_name'] = this.lastName;
     data['middle_name'] = this.middleName;
     data['first_name'] = this.firstName;
@@ -37,4 +37,6 @@ class StudentModel {
     data['created_on'] = this.createdOn;
     return data;
   }
+
+  get fullName => firstName! +  lastName!;
 }
