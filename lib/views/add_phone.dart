@@ -91,7 +91,7 @@ class _AddPhoneState extends State<AddPhone> {
         phoneType: phone_type,
         areaCode: _areaCodeController.text,
         countryCode: _countryCodeController.text);
-    await studentService.addPhone(phone).then((value) => {print(value)});
+
     try {
       await studentService.addPhone(phone).then((value) => {
             Navigator.of(context).push(MaterialPageRoute(

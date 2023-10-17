@@ -3,6 +3,8 @@ import 'package:estudiantes_aplicacion/models/student.dart';
 import 'package:estudiantes_aplicacion/services/student.dart';
 
 import 'package:estudiantes_aplicacion/widgets/appbar.dart';
+
+import '../utils/constant.dart';
 class EditStudent extends StatefulWidget {
 
  EditStudent({required this.studentId});
@@ -101,9 +103,16 @@ class _EditStudentState extends State<EditStudent> {
   
     saveData() async{
        StudentModel student  = StudentModel(studentId: widget.studentId,  lastName: _lastNameController.text, firstName: _firstNameController.text, middleName: _middleNameController.text, gender: gender);
-       await  studentService.editStudent(student).then((value) => {
-        print(value)
-       });
+   
       
+    try {
+      await studentService
+          .editStudent(student)
+          .then((value) => {Navigator.pushNamed(context, studentList)});
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(e.toString())),
+      );
+    }
     }
 }
