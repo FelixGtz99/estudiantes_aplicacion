@@ -25,20 +25,20 @@ class AddressModel {
     city = json['city'];
     zipPostcode = json['zip_postcode'];
     state = json['state'];
-    updatedOn = json['updated_on'];
-    createdOn = json['created_on'];
+    // updatedOn = json['updated_on'];
+    // createdOn = json['created_on'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['address_id'] = this.addressId;
-    data['student_id'] = this.studentId;
-    data['address_line'] = this.addressLine;
-    data['city'] = this.city;
-    data['zip_postcode'] = this.zipPostcode;
-    data['state'] = this.state;
-    data['updated_on'] = this.updatedOn;
-    data['created_on'] = this.createdOn;
+    data['address_id'] = addressId;
+    data['student_id'] = studentId;
+    data['address_line'] = addressLine;
+    data['city'] = city;
+    data['zip_postcode'] = zipPostcode;
+    data['state'] = state;
+   if(updatedOn!=null) data['updated_on'] = updatedOn?.toIso8601String();
+   if(createdOn!=null)  data['created_on'] =createdOn?.toIso8601String();
     return data;
   }
 }

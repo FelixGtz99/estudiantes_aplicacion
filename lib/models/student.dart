@@ -22,8 +22,8 @@ class StudentModel {
     middleName = json['middle_name'];
     firstName = json['first_name'];
     gender = json['gender'];
-    updatedOn =DateTime.parse( json['updated_on'] );
-    createdOn = DateTime.parse( json['created_on'] );
+   // updatedOn =DateTime.parse( json['updated_on'] );
+
   }
 
   Map<String, dynamic> toJson() {

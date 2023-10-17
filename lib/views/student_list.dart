@@ -1,9 +1,10 @@
+import 'package:estudiantes_aplicacion/views/student.dart';
+import 'package:flutter/material.dart';
 import 'package:estudiantes_aplicacion/models/student.dart';
 import 'package:estudiantes_aplicacion/services/student.dart';
-import 'package:estudiantes_aplicacion/widgets/student_tile.dart';
-import 'package:flutter/material.dart';
-
 import 'package:estudiantes_aplicacion/widgets/appbar.dart';
+
+
 
 class StudentList extends StatelessWidget {
   const StudentList({Key? key}) : super(key: key);
@@ -39,4 +40,40 @@ class StudentList extends StatelessWidget {
           )),
     );
   }
+  Widget studentTile(StudentModel student, context) {
+  return Container(
+    margin: const EdgeInsets.symmetric(vertical: 2),
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.circular(20),
+    ),
+    child: Card(
+      color: Colors.white,
+      child: ListTile(
+        title: Text(student.fullName),
+        trailing: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            IconButton(
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => StudentDetailScreen(
+                      studentId: student.studentId ?? 0,
+                    ),
+                  ),
+                );
+              },
+              icon: const Icon(Icons.visibility),
+            ),
+            IconButton(
+              onPressed: () => {},
+              icon: const Icon(Icons.delete),
+            ),
+          ],
+        ),
+      ),
+    ),
+  );
+}
+
 }

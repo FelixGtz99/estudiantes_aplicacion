@@ -1,8 +1,11 @@
+import 'package:estudiantes_aplicacion/views/edit_student.dart';
 import 'package:flutter/material.dart';
 
 import '../models/student.dart';
 import '../services/student.dart';
 import '../widgets/appbar.dart';
+import 'mail_student.dart';
+
 class StudentDetailScreen extends StatelessWidget {
   final int studentId;
   final StudentService studentService = StudentService();
@@ -34,36 +37,39 @@ class StudentDetailScreen extends StatelessWidget {
                   ListTile(
                     title: Text('Género: ${student?.gender}'),
                   ),
-      
                   ListTile(
                     leading: const Icon(Icons.edit),
                     title: const Text('Editar'),
                     onTap: () {
-                     
+                   
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => EditStudent(
+                          studentId: student?.studentId ?? 0,
+                        ),
+                      ));
                     },
                   ),
-              
                   ListTile(
                     leading: const Icon(Icons.email),
                     title: const Text('Correo'),
                     onTap: () {
+                      
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => MailStudent(
+                          studentId: student?.studentId ?? 0,
+                        ),
+                      ));
                     },
                   ),
-               
                   ListTile(
                     leading: const Icon(Icons.phone),
                     title: const Text('Teléfono'),
-                    onTap: () {
-                    
-                    },
+                    onTap: () {},
                   ),
-        
                   ListTile(
                     leading: Icon(Icons.location_on),
                     title: const Text('Direcciones'),
-                    onTap: () {
-                   
-                    },
+                    onTap: () {},
                   ),
                 ],
               );

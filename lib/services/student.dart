@@ -1,3 +1,5 @@
+import 'package:estudiantes_aplicacion/models/email.dart';
+
 import '../utils/database.dart';
 
 import '../models/student.dart';
@@ -12,6 +14,23 @@ class StudentService {
 
   Future<int> addStudent(StudentModel student) async {
     return await databaseHelper.insertStudent(student);
+  }
+    Future<int> editStudent(StudentModel student) async {
+    return await databaseHelper.updateStudent(student);
+  }
+
+  Future<int> addEmail(EmailModel email) async {
+    return await databaseHelper.insertEmail(email);
+  }
+  Future<int> editEmail(EmailModel email) async {
+    return await databaseHelper.updateEmail(email);
+  }
+
+  Future<List<EmailModel>> getEmail(studentId) async{
+    return await databaseHelper.getEmailsByStudentId(studentId);
+  }
+    Future<EmailModel> getDataEmail(email) async{
+    return await databaseHelper.getEmail(email);
   }
   Future<StudentModel> getStudentById(int studentId) async {
   final db = await databaseHelper.database;

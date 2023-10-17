@@ -20,17 +20,17 @@ class EmailModel {
     email = json['email'];
     studentId = json['student_id'];
     emailType = json['email_type'];
-    updatedOn = json['updated_on'];
-    createdOn = json['created_on'];
+    // updatedOn = json['updated_on'];
+    // createdOn = json['created_on'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['email'] = this.email;
-    data['student_id'] = this.studentId;
-    data['email_type'] = this.emailType;
-    data['updated_on'] = this.updatedOn;
-    data['created_on'] = this.createdOn;
+    data['email'] = email;
+    data['student_id'] = studentId;
+    data['email_type'] = emailType;
+   if(updatedOn!=null) data['updated_on'] = updatedOn?.toIso8601String();
+   if(createdOn!=null)  data['created_on'] =createdOn?.toIso8601String();
     return data;
   }
 }

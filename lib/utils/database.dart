@@ -8,7 +8,7 @@ import '../models/phone.dart';
 import '../models/student.dart';
 
 class DatabaseHelper {
-  DatabaseHelper._(); // Constructor privado para Singleton
+  DatabaseHelper._();
   static final DatabaseHelper instance = DatabaseHelper._();
 
   static Database? _database;
@@ -29,7 +29,7 @@ class DatabaseHelper {
   }
 
   Future<Database> initDatabase() async {
-    final path = join(await getDatabasesPath(), 'students_database.db');
+    final path = join(await getDatabasesPath(), 'students_database3.db');
     return await openDatabase(path, version: 2, onCreate: _createDatabase);
   }
 
@@ -156,5 +156,86 @@ Future<int> insertAddress(AddressModel address) async {
   address.createdOn = DateTime.now();
   address.updatedOn = DateTime.now();
   return await db.insert(addressTableName, address.toJson());
+}
+Future<int> updateStudent(StudentModel student) async {
+  final db = await database;
+  student.updatedOn = DateTime.now();
+  return await db.update(
+    studentsTableName,
+    student.toJson(),
+    where: 'student_id = ?',
+    whereArgs: [student.studentId],
+  );
+}
+
+Future<int> updateAddress(AddressModel address) async {
+  final db = await database;
+  address.updatedOn = DateTime.now();
+  return await db.update(
+    addressTableName,
+    address.toJson(),
+    where: 'address_id = ?',
+    whereArgs: [address.addressId],
+  );
+}
+Future<int> updateEmail(EmailModel email) async {
+  final db = await database;
+  email.updatedOn = DateTime.now();
+  return await db.update(
+    emailsTableName,
+    email.toJson(),
+    where: 'email = ?',
+    whereArgs: [email.email],
+  );
+}
+Future<int> updatePhone(PhoneModel phone) async {
+  final db = await database;
+  phone.updatedOn = DateTime.now();
+  return await db.update(
+    phonesTableName,
+    phone.toJson(),
+    where: 'phone_id = ?',
+    whereArgs: [phone.phoneId],
+  );
+}
+  Future<EmailModel> getEmail(String email) async {
+  final db = await database;
+  final List<Map<String, dynamic>> maps = await db.query(
+   emailsTableName,
+    where: 'email = ?',
+    whereArgs: [email],
+  );
+  if (maps.isNotEmpty) {
+    return EmailModel.fromJson(maps.first);
+  } else {
+    throw Exception('Correo no encontrado');
+  }
+}
+  Future<PhoneModel> getPhone(int phoneId) async {
+  final db = await database;
+  final List<Map<String, dynamic>> maps = await db.query(
+   phonesTableName,
+    where: 'phone_id = ?',
+    whereArgs: [phoneId],
+  );
+  if (maps.isNotEmpty) {
+    return PhoneModel.fromJson(maps.first);
+  } else {
+    throw Exception('Correo no encontrado');
+  }
+}
+
+  Future<AddressModel> getAddress(int addressId) async {
+  final db = await database;
+  final List<Map<String, dynamic>> maps = await db.query(
+   phonesTableName,
+    where: 'address_id = ?',
+    whereArgs: [addressId],
+  );
+  if (maps.isNotEmpty) {
+    return AddressModel.fromJson(maps.first);
+  } else {
+    throw Exception('Correo no encontrado');
+  }
 }
 }

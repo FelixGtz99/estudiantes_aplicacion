@@ -25,20 +25,20 @@ class PhoneModel {
     phoneType = json['phone_type'];
     countryCode = json['country_code'];
     areaCode = json['area_code'];
-    updatedOn = json['updated_on'];
-    createdOn = json['created_on'];
+    // updatedOn = json['updated_on'];
+    // createdOn = json['created_on'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['phone_id'] = this.phoneId;
-    data['student_id'] = this.studentId;
-    data['phone'] = this.phone;
-    data['phone_type'] = this.phoneType;
-    data['country_code'] = this.countryCode;
-    data['area_code'] = this.areaCode;
-    data['updated_on'] = this.updatedOn;
-    data['created_on'] = this.createdOn;
+    data['phone_id'] = phoneId;
+    data['student_id'] = studentId;
+    data['phone'] = phone;
+    data['phone_type'] = phoneType;
+    data['country_code'] = countryCode;
+    data['area_code'] = areaCode;
+   if(updatedOn!=null) data['updated_on'] = updatedOn?.toIso8601String();
+   if(createdOn!=null)  data['created_on'] =createdOn?.toIso8601String();
     return data;
   }
 }
