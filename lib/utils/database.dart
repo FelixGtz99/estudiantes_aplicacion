@@ -221,7 +221,7 @@ Future<int> updatePhone(PhoneModel phone) async {
   if (maps.isNotEmpty) {
     return PhoneModel.fromJson(maps.first);
   } else {
-    throw Exception('Correo no encontrado');
+    throw Exception('Teléfono no encontrado');
   }
 }
 
@@ -235,7 +235,7 @@ Future<int> updatePhone(PhoneModel phone) async {
   if (maps.isNotEmpty) {
     return AddressModel.fromJson(maps.first);
   } else {
-    throw Exception('Correo no encontrado');
+    throw Exception('Dirección no encontrada');
   }
 }
 }

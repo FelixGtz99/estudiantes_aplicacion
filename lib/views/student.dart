@@ -1,4 +1,5 @@
 import 'package:estudiantes_aplicacion/views/edit_student.dart';
+import 'package:estudiantes_aplicacion/views/phone_student.dart';
 import 'package:flutter/material.dart';
 
 import '../models/student.dart';
@@ -64,7 +65,15 @@ class StudentDetailScreen extends StatelessWidget {
                   ListTile(
                     leading: const Icon(Icons.phone),
                     title: const Text('Teléfono'),
-                    onTap: () {},
+                    onTap: () {
+
+                          
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => PhoneStudent(
+                          studentId: student?.studentId ?? 0,
+                        ),
+                      ));
+                    },
                   ),
                   ListTile(
                     leading: Icon(Icons.location_on),

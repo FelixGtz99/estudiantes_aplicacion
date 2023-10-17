@@ -41,4 +41,5 @@ class PhoneModel {
    if(createdOn!=null)  data['created_on'] =createdOn?.toIso8601String();
     return data;
   }
+    get fullNumber => "${countryCode!} ${areaCode!} ${phone!}";
 }
