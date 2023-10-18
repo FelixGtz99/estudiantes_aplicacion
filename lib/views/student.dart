@@ -33,56 +33,69 @@ class StudentDetailScreen extends StatelessWidget {
               return ListView(
                 padding: const EdgeInsets.all(16.0),
                 children: [
+                 const CircleAvatar(radius: 60, child: Icon(Icons.person, size:55),),
                   ListTile(
-                    title: Text('Nombre: ${student?.fullName}'),
+                    title: Text('Nombre: ${student?.firstName}'),
+                  ),
+                  if(student?.middleName != '') ListTile(
+                    title: Text('Segundo Nombre: ${student?.middleName}'),
+                  ),
+                       
+                       ListTile(
+                    title: Text('Apellido(s): ${student?.lastName}'),
                   ),
                   ListTile(
                     title: Text('Género: ${student?.gender}'),
                   ),
-                  ListTile(
-                    leading: const Icon(Icons.edit),
-                    title: const Text('Editar'),
-                    onTap: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => EditStudent(
-                          studentId: student?.studentId ?? 0,
-                        ),
-                      ));
-                    },
-                  ),
-                  ListTile(
-                    leading: const Icon(Icons.email),
-                    title: const Text('Correo'),
-                    onTap: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => MailStudent(
-                          studentId: student?.studentId ?? 0,
-                        ),
-                      ));
-                    },
-                  ),
-                  ListTile(
-                    leading: const Icon(Icons.phone),
-                    title: const Text('Teléfono'),
-                    onTap: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => PhoneStudent(
-                          studentId: student?.studentId ?? 0,
-                        ),
-                      ));
-                    },
-                  ),
-                  ListTile(
-                    leading: Icon(Icons.location_on),
-                    title: const Text('Direcciones'),
-                    onTap: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => AddressStudent(
-                          studentId: student?.studentId ?? 0,
-                        ),
-                      ));
-                    },
-                  ),
+            
+                  Padding(
+  padding: const EdgeInsets.all(16.0),
+  child: Row(
+    mainAxisAlignment: MainAxisAlignment.spaceAround, // Alinea los elementos en el centro con espacio entre ellos
+    children: [
+            IconButton(
+        icon: Icon(Icons.edit),
+        onPressed: () {
+          Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => EditStudent(
+              studentId: student?.studentId ?? 0,
+            ),
+          ));
+        },
+      ),
+  IconButton(
+        icon: Icon(Icons.email),
+        onPressed: () {
+          Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => MailStudent(
+              studentId: student?.studentId ?? 0,
+            ),
+          ));
+        },
+      ),
+      IconButton(
+        icon: Icon(Icons.phone),
+        onPressed: () {
+          Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => PhoneStudent(
+              studentId: student?.studentId ?? 0,
+            ),
+          ));
+        },
+      ),
+      IconButton(
+        icon: Icon(Icons.location_on),
+        onPressed: () {
+          Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => AddressStudent(
+              studentId: student?.studentId ?? 0,
+            ),
+          ));
+        },
+      ),
+    ],
+  ),
+)
                 ],
               );
             }

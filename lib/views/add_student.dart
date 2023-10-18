@@ -1,5 +1,6 @@
 import 'package:estudiantes_aplicacion/models/student.dart';
 import 'package:estudiantes_aplicacion/services/student.dart';
+import 'package:estudiantes_aplicacion/views/student.dart';
 import 'package:flutter/material.dart';
 
 import 'package:estudiantes_aplicacion/widgets/appbar.dart';
@@ -95,7 +96,15 @@ class _AddStudentState extends State<AddStudent> {
     try {
       await studentService
           .addStudent(student)
-          .then((value) => {Navigator.pushNamed(context, studentList)});
+          .then((value) => {
+                 Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => StudentDetailScreen(
+                      studentId: value,
+                    ),
+                  ),
+                )
+          });
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(e.toString())),
