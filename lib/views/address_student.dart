@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../services/student.dart';
+import '../utils/constant.dart';
 import '../widgets/appbar.dart';
 import 'package:estudiantes_aplicacion/views/add_address.dart';
 import 'package:estudiantes_aplicacion/views/edit_address.dart';
@@ -18,40 +19,46 @@ class _AddressStudentState extends State<AddressStudent> {
   @override
   Widget build(BuildContext context) {
     final studentService = StudentService();
-    return Scaffold(
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => AddAddress(
-                studentId: widget.studentId,
-              ),
-            ));
-          },
-          child: const Icon(Icons.add),
-        ),
-        appBar: CustomAppBar(title: 'Direcciones Estudiante'),
-        body: Center(
-          child: FutureBuilder<List<AddressModel>>(
-            future: studentService.getAddresses(widget.studentId),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const CircularProgressIndicator();
-              } else if (snapshot.hasError) {
-                return Text('Error: ${snapshot.error}');
-              } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                return const Text('No se encontraron Direcciones.');
-              } else {
-                return ListView.builder(
-                  itemCount: snapshot.data!.length,
-                  itemBuilder: (context, index) {
-                    AddressModel address = snapshot.data![index];
-                    return addressTile(address, context);
-                  },
-                );
-              }
+    return WillPopScope(
+      onWillPop: () async{ 
+         Navigator.pushNamed(context, studentList);
+        return false;
+       },
+      child: Scaffold(
+          floatingActionButton: FloatingActionButton(
+            onPressed: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => AddAddress(
+                  studentId: widget.studentId,
+                ),
+              ));
             },
+            child: const Icon(Icons.add),
           ),
-        ));
+          appBar: CustomAppBar(title: 'Direcciones Estudiante'),
+          body: Center(
+            child: FutureBuilder<List<AddressModel>>(
+              future: studentService.getAddresses(widget.studentId),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const CircularProgressIndicator();
+                } else if (snapshot.hasError) {
+                  return Text('Error: ${snapshot.error}');
+                } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                  return const Text('No se encontraron Direcciones.');
+                } else {
+                  return ListView.builder(
+                    itemCount: snapshot.data!.length,
+                    itemBuilder: (context, index) {
+                      AddressModel address = snapshot.data![index];
+                      return addressTile(address, context);
+                    },
+                  );
+                }
+              },
+            ),
+          )),
+    );
   }
 
   Widget addressTile(AddressModel address, context) {

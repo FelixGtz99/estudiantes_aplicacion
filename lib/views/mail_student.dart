@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../models/email.dart';
 import '../services/student.dart';
+import '../utils/constant.dart';
 import '../widgets/appbar.dart';
 import 'edit_email.dart';
 
@@ -18,40 +19,46 @@ class _MailStudentState extends State<MailStudent> {
   @override
   Widget build(BuildContext context) {
     final studentService = StudentService();
-    return Scaffold(
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => AddEmail(
-                studentId: widget.studentId,
-              ),
-            ));
-          },
-          child: const Icon(Icons.add),
-        ),
-        appBar: CustomAppBar(title: 'Correos Estudiante'),
-        body: Center(
-          child: FutureBuilder<List<EmailModel>>(
-            future: studentService.getEmail(widget.studentId),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const CircularProgressIndicator();
-              } else if (snapshot.hasError) {
-                return Text('Error: ${snapshot.error}');
-              } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                return const Text('No se encontraron Correos.');
-              } else {
-                return ListView.builder(
-                  itemCount: snapshot.data!.length,
-                  itemBuilder: (context, index) {
-                    EmailModel email = snapshot.data![index];
-                    return emailTile(email, context);
-                  },
-                );
-              }
+    return WillPopScope(
+      onWillPop: () async{ 
+         Navigator.pushNamed(context, studentList);
+        return false;
+       },
+      child: Scaffold(
+          floatingActionButton: FloatingActionButton(
+            onPressed: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => AddEmail(
+                  studentId: widget.studentId,
+                ),
+              ));
             },
+            child: const Icon(Icons.add),
           ),
-        ));
+          appBar: CustomAppBar(title: 'Correos Estudiante'),
+          body: Center(
+            child: FutureBuilder<List<EmailModel>>(
+              future: studentService.getEmail(widget.studentId),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const CircularProgressIndicator();
+                } else if (snapshot.hasError) {
+                  return Text('Error: ${snapshot.error}');
+                } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                  return const Text('No se encontraron Correos.');
+                } else {
+                  return ListView.builder(
+                    itemCount: snapshot.data!.length,
+                    itemBuilder: (context, index) {
+                      EmailModel email = snapshot.data![index];
+                      return emailTile(email, context);
+                    },
+                  );
+                }
+              },
+            ),
+          )),
+    );
   }
 
   Widget emailTile(EmailModel email, context) {

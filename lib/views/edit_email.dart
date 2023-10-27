@@ -44,7 +44,7 @@ class _EditEmailState extends State<EditEmail> {
               final email = snapshot.data;
               _emailController.text = email?.email ?? '';
               studentId = email?.studentId ?? 0;
-
+             email_type = email?.emailType ?? 'Personal';
               return Column(
                   children: [_emailInput(), typeSelect(email?.emailType)]);
             }

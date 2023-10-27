@@ -29,7 +29,7 @@ class DatabaseHelper {
   }
 
   Future<Database> initDatabase() async {
-    final path = join(await getDatabasesPath(), 'students_database.db');
+    final path = join(await getDatabasesPath(), 'students_database20.db');
     return await openDatabase(path, version: 2, onCreate: _createDatabase);
   }
 

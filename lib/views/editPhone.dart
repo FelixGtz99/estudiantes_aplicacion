@@ -48,7 +48,7 @@ class _EditPhoneState extends State<EditPhone> {
               _phoneController.text = phone?.phone ?? '';
               _areaCodeController.text = phone?.areaCode ?? '';
               _countryCodeController.text = phone?.countryCode ?? '';
-
+           phone_type = phone?.phoneType ?? "Teléfono Fijo";
               studentId = phone?.studentId ?? 0;
 
               return Column(children: [

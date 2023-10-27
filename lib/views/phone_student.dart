@@ -3,6 +3,7 @@ import '../services/student.dart';
 import 'package:estudiantes_aplicacion/views/add_phone.dart';
 
 import '../models/phone.dart';
+import '../utils/constant.dart';
 import '../widgets/appbar.dart';
 import 'editPhone.dart';
 
@@ -18,40 +19,46 @@ class _PhoneStudentState extends State<PhoneStudent> {
   @override
   Widget build(BuildContext context) {
     final studentService = StudentService();
-    return Scaffold(
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => AddPhone(
-                studentId: widget.studentId,
-              ),
-            ));
-          },
-          child: const Icon(Icons.add),
-        ),
-        appBar: CustomAppBar(title: 'Teléfonos Estudiante'),
-        body: Center(
-          child: FutureBuilder<List<PhoneModel>>(
-            future: studentService.getPhones(widget.studentId),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const CircularProgressIndicator();
-              } else if (snapshot.hasError) {
-                return Text('Error: ${snapshot.error}');
-              } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                return const Text('No se encontraron Teléfonos.');
-              } else {
-                return ListView.builder(
-                  itemCount: snapshot.data!.length,
-                  itemBuilder: (context, index) {
-                    PhoneModel phone = snapshot.data![index];
-                    return phoneTile(phone, context);
-                  },
-                );
-              }
+    return WillPopScope(
+      onWillPop: () async{ 
+         Navigator.pushNamed(context, studentList);
+        return false;
+       },
+      child: Scaffold(
+          floatingActionButton: FloatingActionButton(
+            onPressed: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => AddPhone(
+                  studentId: widget.studentId,
+                ),
+              ));
             },
+            child: const Icon(Icons.add),
           ),
-        ));
+          appBar: CustomAppBar(title: 'Teléfonos Estudiante'),
+          body: Center(
+            child: FutureBuilder<List<PhoneModel>>(
+              future: studentService.getPhones(widget.studentId),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const CircularProgressIndicator();
+                } else if (snapshot.hasError) {
+                  return Text('Error: ${snapshot.error}');
+                } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                  return const Text('No se encontraron Teléfonos.');
+                } else {
+                  return ListView.builder(
+                    itemCount: snapshot.data!.length,
+                    itemBuilder: (context, index) {
+                      PhoneModel phone = snapshot.data![index];
+                      return phoneTile(phone, context);
+                    },
+                  );
+                }
+              },
+            ),
+          )),
+    );
   }
 
   Widget phoneTile(PhoneModel phone, context) {

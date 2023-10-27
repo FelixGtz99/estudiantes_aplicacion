@@ -42,7 +42,7 @@ class _EditStudentState extends State<EditStudent> {
               _firstNameController.text =student?.firstName ?? '';
               _middleNameController.text =student?.middleName ?? '';
               _lastNameController.text =student?.lastName ?? '';
-       
+              gender = student?.gender! ?? "Otro";
               return Column(
             children: [_firstNameInput(), _middleNameInput(), _lastNameInput(),genderSelect(student?.gender)]);
             }
